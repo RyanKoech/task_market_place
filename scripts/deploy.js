@@ -7,6 +7,20 @@
 const hre = require("hardhat");
 
 async function main() {
+  deployLockContract();
+  deployTaskMarketPlaceContract();
+}
+
+async function deployTaskMarketPlaceContract() {
+  const contractName = "TaskMarketplace";
+  const taskMarketPlace = await hre.ethers.deployContract(contractName);
+
+  await taskMarketPlace.waitForDeployment();
+
+  console.log(`${contractName} deployed to ${taskMarketPlace.target}`);
+}
+
+async function deployLockContract() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
   const unlockTime = currentTimestampInSeconds + 60;
 
@@ -23,6 +37,7 @@ async function main() {
       lockedAmount
     )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
   );
+  
 }
 
 // We recommend this pattern to be able to use async/await everywhere
